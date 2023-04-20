@@ -3,61 +3,45 @@
 # Answers
 
 ### 1. All the companies whose name match 'Babelgum'. Retrieve only their `name` field.
-
-<!-- Your Code Goes Here -->
-filter: {name: "Babelgum"} 
-project: {name: 1} 
+filter {name: 'Babelgum', } project {name:1, _id: 0}
 
 ### 2. All the companies that have more than 5000 employees. Limit the search to 20 companies and sort them by **number of employees**.
 
-<!-- Your Code Goes Here -->
-filter: {number_of_employees: {$gte:5000}} 
-sort: {number_of_employees: 1} 
-limit: 20
+filter {number_of_employees: {$gt: 5000}} sort {number_of_employees: -1} limit 20
 
 
 ### 3. All the companies founded between 2000 and 2005, both years included. Retrieve only the `name` and `founded_year` fields.
-filter: { $and: [{founded_year: {$gte: 2000}}, {founded_year: {$lte: 2005}}]}
 
-project: {name: 1, founded_year: 1, _id: 0}
+filter {$and: [{founded_year: {$gte: 2000}}, {founded_year: {$lte: 2005}}]} project {name: 1, founded_year: 1, _id: 0}
 <!-- Your Code Goes Here -->
 
 ### 4. All the companies that had a Valuation Amount of more than 100.000.000 and have been founded before 2010. Retrieve only the `name` and `ipo` fields.
 
-filter: { $and: [ {founded_year: {$lt: 2010}}, {"ipo.valuation_amount": {$gt: 100000000}} ]} 
-project: {name:1, ipo:1, -id: 0} 
-<!-- Your Code Goes Here -->
+filter {$and: [{"ipo.valuation_amount": {$gte: 1000000000}}, {founded_year: {$lte: 2010}}]} project {name: 1, ipo: 1, _id: 0}
 
 ### 5. All the companies that have less than 1000 employees and have been founded before 2005. Order them by the number of employees and limit the search to 10 companies.
-filter: {$and : [{ number_of_employees: { $lt : 1000 }  }, { founded_year: { $lt : 2005 }  } ] }
-sort: { number_of_employees : 1 }
-limit: 10
+
+filter {number_of_employees: {$lt: 1000}}, {founded_year: {$lt: 2005}} sort {number_of_employees: 1} limit 10
 <!-- Your Code Goes Here -->
 
 ### 6. All the companies that don't include the `partners` field.
-filter: { partners: { $exists: true, $type: 'array', $ne: [] } }
-{ category_code: { $type: 'null' } }
-<!-- Your Code Goes Here -->
+filter { partners: { $exists: true, $type: 'array', $eq: [] } }
 
-filter: { partners: { $exists: true, $type: 'array', $ne: [] } }
+
 
 ### 7. All the companies that have a null type of value on the `category_code` field.
-filter { partners: { $exists: true, $type: 'array', $ne: [] } }
-{ category_code: { $type: 'null' } }
-<!-- Your Code Goes Here -->
+filter {category_code: {$eq: null}}
 
 ### 8. All the companies that have at least 100 employees but less than 1000. Retrieve only the `name` and `number of employees` fields.
-filter: {$and: [{number_of_employees: {$gte: 100}}, {number_of_employees: {$lt: 1000}}]}
-
-project: {name: 1, number_of_employees: 1, _id: 0}
+filter {$and: [{number_of_employees: {$gte: 100}}, {number_of_employees: {$lte: 1000}}]} project {name: 1, number_of_employees: 1, _id: 0}
 <!-- Your Code Goes Here -->
 
 ### 9. Order all the companies by their IPO price in a descending order.
-Sort: {"ipo.valuation_amount": -1}
+sort {"ipo.valuation_amount": -1}
 <!-- Your Code Goes Here -->
 
 ### 10. Retrieve the 10 companies with most employees, order by the `number of employees`
-sort: {number_of_employees: -1}
+sort {number_of_employees: -1} limit 10
 <!-- Your Code Goes Here -->
 
 ### 11. All the companies founded on the second semester of the year. Limit your search to 1000 companies.
